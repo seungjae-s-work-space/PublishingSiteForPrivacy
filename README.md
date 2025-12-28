@@ -42,3 +42,9 @@ npm run build
 4. GitHub 저장소를 연결합니다.
 5. 빌드 명령어는 `npm run build`, publish 디렉토리는 `dist`로 설정합니다.
 6. 배포가 완료되면 Netlify에서 제공하는 URL로 접속해 결과를 확인할 수 있습니다.
+
+## Privacy Policy Pages
+
+| App | URL |
+|-----|-----|
+| Insta Unfollower Checker | https://gleeful-cat-4bf6b5.netlify.app/privacy/insta-unfollower-checker/ |
