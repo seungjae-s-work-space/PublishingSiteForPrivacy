@@ -4,8 +4,9 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
-// 앱 정보 매핑 (a007 ~ a028)
+// 앱 정보 매핑 (a007 ~ a028 + insta-unfollower-checker)
 const appInfoMap = {
+  'insta-unfollower-checker': { name: 'Insta Unfollower Checker', nameKo: '인스타 언팔 체커', category: 'SNS/유틸리티', isInstagram: true },
   'a007': { name: 'Battery Saver Pro', nameKo: '배터리 세이버 프로', category: '배터리/유틸리티' },
   'a008': { name: 'Battery Health Check', nameKo: '배터리 건강 체크', category: '배터리/유틸리티' },
   'a009': { name: 'Charging Alarm', nameKo: '충전 알람', category: '배터리/유틸리티' },
@@ -32,6 +33,7 @@ const appInfoMap = {
 
 const appId = computed(() => route.params.appId)
 const appInfo = computed(() => appInfoMap[appId.value] || { name: 'Unknown App', nameKo: '알 수 없는 앱', category: '기타' })
+const isInstagramApp = computed(() => appInfo.value.isInstagram === true)
 const currentDate = new Date().toISOString().split('T')[0]
 const effectiveDate = '2025-01-01'
 </script>
@@ -85,6 +87,48 @@ const effectiveDate = '2025-01-01'
         <p class="note">
           * 본 앱은 회원가입을 요구하지 않으며, 이름, 이메일, 전화번호 등의 개인 식별 정보를 수집하지 않습니다.
         </p>
+      </section>
+
+      <!-- Instagram 전용 섹션 -->
+      <section v-if="isInstagramApp" class="policy-section instagram-section">
+        <h3>📱 Instagram 데이터 수집 및 처리 (중요)</h3>
+        <p>
+          본 앱은 Instagram 팔로워/팔로잉 분석 기능을 제공하기 위해 다음과 같은 방식으로 데이터를 처리합니다:
+        </p>
+
+        <h4>3-1. Instagram 로그인 방식</h4>
+        <ul>
+          <li>본 앱은 Instagram 공식 웹 로그인 페이지를 WebView로 표시합니다.</li>
+          <li>사용자는 Instagram 공식 페이지에서 직접 로그인합니다.</li>
+          <li><strong>본 앱은 사용자의 Instagram 아이디와 비밀번호를 직접 수집하거나 저장하지 않습니다.</strong></li>
+        </ul>
+
+        <h4>3-2. 수집하는 Instagram 데이터</h4>
+        <ul>
+          <li>Instagram 세션 쿠키 (로그인 상태 유지 목적)</li>
+          <li>팔로워 목록 (사용자명, 프로필 정보)</li>
+          <li>팔로잉 목록 (사용자명, 프로필 정보)</li>
+        </ul>
+
+        <h4>3-3. 데이터 저장 위치</h4>
+        <p class="note important">
+          ⚠️ <strong>중요:</strong> 모든 Instagram 관련 데이터는 사용자의 기기 내부에만 저장됩니다.
+          외부 서버로 전송되거나 제3자와 공유되지 않습니다.
+        </p>
+
+        <h4>3-4. 데이터 보유 기간</h4>
+        <ul>
+          <li>세션 쿠키: 앱 내 "새로고침" 또는 앱 삭제 시 즉시 삭제</li>
+          <li>팔로워/팔로잉 데이터: 앱 삭제 시 자동 삭제</li>
+          <li>사용자가 앱 내에서 언제든지 데이터를 삭제할 수 있습니다.</li>
+        </ul>
+
+        <h4>3-5. Instagram 계정 보안</h4>
+        <ul>
+          <li>본 앱은 Instagram의 보안 로그인 페이지를 사용합니다.</li>
+          <li>로그인 정보는 Instagram 서버에서만 처리됩니다.</li>
+          <li>앱 개발자는 사용자의 Instagram 로그인 자격 증명에 접근할 수 없습니다.</li>
+        </ul>
       </section>
 
       <section class="policy-section">
@@ -236,6 +280,54 @@ const effectiveDate = '2025-01-01'
         </p>
       </section>
 
+      <!-- Instagram-specific section (English) -->
+      <section v-if="isInstagramApp" class="policy-section english instagram-section">
+        <h3>📱 Instagram Data Collection and Processing (Important)</h3>
+        <p>
+          This app processes data in the following manner to provide Instagram follower/following analysis features:
+        </p>
+
+        <h4>2-1. Instagram Login Method</h4>
+        <ul>
+          <li>This app displays the official Instagram web login page via WebView.</li>
+          <li>Users log in directly on the official Instagram page.</li>
+          <li><strong>This app does NOT collect or store your Instagram username or password directly.</strong></li>
+        </ul>
+
+        <h4>2-2. Instagram Data Collected</h4>
+        <ul>
+          <li>Instagram session cookies (for maintaining login state)</li>
+          <li>Follower list (usernames, profile information)</li>
+          <li>Following list (usernames, profile information)</li>
+        </ul>
+
+        <h4>2-3. Data Storage Location</h4>
+        <p class="note important">
+          ⚠️ <strong>Important:</strong> All Instagram-related data is stored ONLY on the user's device.
+          No data is transmitted to external servers or shared with third parties.
+        </p>
+
+        <h4>2-4. Data Retention Period</h4>
+        <ul>
+          <li>Session cookies: Deleted immediately upon "Refresh" in-app or app uninstallation</li>
+          <li>Follower/Following data: Automatically deleted when app is uninstalled</li>
+          <li>Users can delete their data at any time within the app.</li>
+        </ul>
+
+        <h4>2-5. Instagram Account Security</h4>
+        <ul>
+          <li>This app uses Instagram's secure login page.</li>
+          <li>Login credentials are processed only by Instagram servers.</li>
+          <li>The app developer cannot access users' Instagram login credentials.</li>
+        </ul>
+
+        <h4>2-6. Disclaimer</h4>
+        <p class="note">
+          This app is not affiliated with, authorized, maintained, sponsored, or endorsed by Instagram or Meta Platforms, Inc.
+          Use of this app is at your own discretion and risk.
+        </p>
+      </section>
+
       <section class="policy-section english">
         <h3>3. Third-Party Services</h3>
         <p>The App uses the following third-party services:</p>
@@ -371,6 +463,48 @@ const effectiveDate = '2025-01-01'
 
 .policy-section.english h3 {
   color: #2c5282;
+}
+
+/* Instagram 전용 스타일 */
+.policy-section.instagram-section {
+  background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+  border-left-color: #e1306c;
+  border: 2px solid #e1306c;
+}
+
+.policy-section.instagram-section h3 {
+  color: #e1306c;
+  font-size: 1.3rem;
+}
+
+.policy-section.instagram-section h4 {
+  color: #833ab4;
+  font-size: 1.05rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  padding-left: 0.5rem;
+  border-left: 3px solid #833ab4;
+}
+
+.policy-section.instagram-section.english {
+  background: linear-gradient(135deg, #f0f4ff, #e8ecff);
+  border-left-color: #4a90d9;
+  border: 2px solid #4a90d9;
+}
+
+.policy-section.instagram-section.english h3 {
+  color: #4a90d9;
+}
+
+.policy-section.instagram-section.english h4 {
+  color: #2c5282;
+  border-left-color: #2c5282;
+}
+
+.note.important {
+  background: #fee2e2;
+  border-left-color: #ef4444;
+  font-weight: 500;
 }
 
 .info-table {
