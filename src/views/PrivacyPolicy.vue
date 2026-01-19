@@ -88,9 +88,9 @@ const effectiveDate = '2025-01-01'
           <li><strong>선택 수집 항목:</strong> 없음</li>
         </ul>
         <ul v-else>
-          <li><strong>필수 수집 항목:</strong> 닉네임</li>
+          <li><strong>필수 수집 항목:</strong> 이메일 주소, 닉네임</li>
           <li><strong>자동 수집 항목:</strong> 기기 정보 (기기 모델, OS 버전), 앱 사용 통계</li>
-          <li><strong>서비스 이용 시 수집:</strong> 상담 내용, 구독 정보</li>
+          <li><strong>서비스 이용 시 수집:</strong> 상담 내용, 첨부 파일 (사진, 문서), 구독 정보</li>
         </ul>
         <p v-if="!isMedicalApp" class="note">
           * 본 앱은 회원가입을 요구하지 않으며, 이름, 이메일, 전화번호 등의 개인 식별 정보를 수집하지 않습니다.
@@ -116,32 +116,42 @@ const effectiveDate = '2025-01-01'
           <li>사용자가 작성한 상담 질문 내용</li>
           <li>전문가의 답변 내용</li>
           <li>상담 이력 및 기록</li>
+          <li>첨부된 사진 및 문서 파일</li>
         </ul>
 
-        <h4>3-3. 상담 내용 관련 정보 처리</h4>
+        <h4>3-3. 첨부 파일 (사진 및 문서)</h4>
+        <ul>
+          <li>사용자가 상담 시 첨부한 사진 파일 (검사 결과, 관련 이미지 등)</li>
+          <li>사용자가 상담 시 첨부한 문서 파일 (PDF, 기타 문서)</li>
+          <li>첨부 파일은 상담 목적으로만 사용되며, Firebase Storage에 암호화되어 저장됩니다.</li>
+          <li>회원 탈퇴 시 모든 첨부 파일은 즉시 삭제됩니다.</li>
+        </ul>
+
+        <h4>3-4. 상담 내용 관련 정보 처리</h4>
         <p class="note important">
-          ⚠️ <strong>중요:</strong> 사용자가 직접 입력한 상담 관련 내용은 정보 제공 및 상담 목적으로만 사용되며,
+          ⚠️ <strong>중요:</strong> 사용자가 직접 입력한 상담 관련 내용 및 첨부 파일은 정보 제공 및 상담 목적으로만 사용되며,
           사용자 동의 없이 제3자에게 제공되지 않습니다. 본 앱은 의료 행위를 제공하지 않으며, 정보 제공 목적의 서비스입니다.
         </p>
 
-        <h4>3-4. 데이터 저장 및 보안</h4>
+        <h4>3-5. 데이터 저장 및 보안</h4>
         <ul>
           <li>모든 데이터는 Firebase (Google Cloud) 서버에 암호화되어 저장됩니다.</li>
           <li>상담 내용은 담당 전문가와 사용자만 열람할 수 있습니다.</li>
           <li>관리자는 서비스 운영 목적으로 데이터에 접근할 수 있습니다.</li>
         </ul>
 
-        <h4>3-5. 구독 및 결제 정보</h4>
+        <h4>3-6. 구독 및 결제 정보</h4>
         <ul>
           <li>인앱 결제는 Google Play / App Store를 통해 처리됩니다.</li>
           <li>결제 정보(카드번호 등)는 본 앱에서 직접 수집하지 않습니다.</li>
           <li>구독 상태 및 만료일 정보만 저장됩니다.</li>
         </ul>
 
-        <h4>3-6. 데이터 보유 기간</h4>
+        <h4>3-7. 데이터 보유 기간</h4>
         <ul>
           <li>회원 정보: 회원 탈퇴 시까지</li>
-          <li>상담 내역: 회원 탈퇴 후 30일 이내 삭제</li>
+          <li>상담 내역: 회원 탈퇴 시 즉시 삭제</li>
+          <li>첨부 파일: 회원 탈퇴 시 즉시 삭제</li>
           <li>결제 기록: 관련 법령에 따라 5년간 보관</li>
         </ul>
       </section>
@@ -350,9 +360,9 @@ const effectiveDate = '2025-01-01'
           <li><strong>Optionally collected:</strong> None</li>
         </ul>
         <ul v-else>
-          <li><strong>Required:</strong> Nickname</li>
+          <li><strong>Required:</strong> Email address, Nickname</li>
           <li><strong>Automatically collected:</strong> Device information (model, OS version), app usage statistics</li>
-          <li><strong>Collected during service use:</strong> Consultation content, subscription information</li>
+          <li><strong>Collected during service use:</strong> Consultation content, attached files (photos, documents), subscription information</li>
         </ul>
         <p v-if="!isMedicalApp" class="note">
           * This app does not require registration and does not collect personally identifiable information such as name, email, or phone number.
@@ -378,32 +388,42 @@ const effectiveDate = '2025-01-01'
           <li>Consultation questions written by users</li>
           <li>Expert responses</li>
           <li>Consultation history and records</li>
+          <li>Attached photos and document files</li>
         </ul>
 
-        <h4>2-3. Consultation Content Processing</h4>
+        <h4>2-3. Attached Files (Photos and Documents)</h4>
+        <ul>
+          <li>Photos attached by users during consultation (test results, related images, etc.)</li>
+          <li>Documents attached by users during consultation (PDF, other documents)</li>
+          <li>Attached files are used only for consultation purposes and are stored encrypted in Firebase Storage.</li>
+          <li>All attached files are immediately deleted upon account deletion.</li>
+        </ul>
+
+        <h4>2-4. Consultation Content Processing</h4>
         <p class="note important">
-          ⚠️ <strong>Important:</strong> Consultation content entered by users is used only for information provision and consultation purposes,
+          ⚠️ <strong>Important:</strong> Consultation content and attached files entered by users are used only for information provision and consultation purposes,
           and will not be provided to third parties without user consent. This app does not provide medical services; it is an information service.
         </p>
 
-        <h4>2-4. Data Storage and Security</h4>
+        <h4>2-5. Data Storage and Security</h4>
         <ul>
           <li>All data is encrypted and stored on Firebase (Google Cloud) servers.</li>
           <li>Consultation content can only be viewed by the assigned expert and the user.</li>
           <li>Administrators may access data for service operation purposes.</li>
         </ul>
 
-        <h4>2-5. Subscription and Payment Information</h4>
+        <h4>2-6. Subscription and Payment Information</h4>
         <ul>
           <li>In-app payments are processed through Google Play / App Store.</li>
           <li>Payment information (card numbers, etc.) is not directly collected by this app.</li>
           <li>Only subscription status and expiration date information is stored.</li>
         </ul>
 
-        <h4>2-6. Data Retention Period</h4>
+        <h4>2-7. Data Retention Period</h4>
         <ul>
           <li>Member information: Until account deletion</li>
-          <li>Consultation history: Deleted within 30 days after account deletion</li>
+          <li>Consultation history: Immediately deleted upon account deletion</li>
+          <li>Attached files: Immediately deleted upon account deletion</li>
           <li>Payment records: Retained for 5 years in accordance with relevant laws</li>
         </ul>
       </section>
