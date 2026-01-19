@@ -62,7 +62,7 @@ const effectiveDate = '2025-01-01'
         <ul>
           <li>앱 서비스 제공 및 운영</li>
           <li>서비스 이용 통계 및 분석</li>
-          <li>광고 서비스 제공 (Google AdMob)</li>
+          <li v-if="!isMedicalApp">광고 서비스 제공 (Google AdMob)</li>
           <li>서비스 개선 및 신규 서비스 개발</li>
         </ul>
       </section>
@@ -75,18 +75,24 @@ const effectiveDate = '2025-01-01'
         </p>
         <ul>
           <li>서비스 이용 기록: 앱 삭제 시까지</li>
-          <li>광고 식별자: 사용자 재설정 또는 앱 삭제 시까지</li>
+          <li v-if="!isMedicalApp">광고 식별자: 사용자 재설정 또는 앱 삭제 시까지</li>
+          <li v-if="isMedicalApp">회원 정보: 회원 탈퇴 시까지</li>
         </ul>
       </section>
 
       <section class="policy-section">
         <h3>3. 처리하는 개인정보 항목</h3>
         <p>앱은 다음의 개인정보 항목을 처리하고 있습니다:</p>
-        <ul>
+        <ul v-if="!isMedicalApp">
           <li><strong>자동 수집 항목:</strong> 기기 정보 (기기 모델, OS 버전), 앱 사용 통계, 광고 식별자 (ADID/IDFA)</li>
           <li><strong>선택 수집 항목:</strong> 없음</li>
         </ul>
-        <p class="note">
+        <ul v-else>
+          <li><strong>필수 수집 항목:</strong> 닉네임</li>
+          <li><strong>자동 수집 항목:</strong> 기기 정보 (기기 모델, OS 버전), 앱 사용 통계</li>
+          <li><strong>서비스 이용 시 수집:</strong> 상담 내용, 구독 정보</li>
+        </ul>
+        <p v-if="!isMedicalApp" class="note">
           * 본 앱은 회원가입을 요구하지 않으며, 이름, 이메일, 전화번호 등의 개인 식별 정보를 수집하지 않습니다.
         </p>
       </section>
@@ -205,13 +211,14 @@ const effectiveDate = '2025-01-01'
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr v-if="!isMedicalApp">
               <td>Google LLC (AdMob)</td>
               <td>모바일 광고 서비스 제공</td>
             </tr>
             <tr>
               <td>Google LLC (Firebase)</td>
-              <td>앱 분석 및 오류 보고</td>
+              <td v-if="!isMedicalApp">앱 분석 및 오류 보고</td>
+              <td v-else>사용자 인증, 데이터 저장, 앱 분석</td>
             </tr>
           </tbody>
         </table>
@@ -254,7 +261,7 @@ const effectiveDate = '2025-01-01'
         </ul>
       </section>
 
-      <section class="policy-section">
+      <section v-if="!isMedicalApp" class="policy-section">
         <h3>9. 광고성 정보 및 맞춤형 광고</h3>
         <p>
           본 앱은 Google AdMob을 통해 광고를 게재합니다.
@@ -265,6 +272,22 @@ const effectiveDate = '2025-01-01'
           <li><strong>Android:</strong> 설정 → Google → 광고 → 광고 맞춤설정 선택 해제</li>
           <li><strong>iOS:</strong> 설정 → 개인 정보 보호 → Apple 광고 → 맞춤형 광고 끄기</li>
         </ul>
+      </section>
+
+      <section v-if="isMedicalApp" class="policy-section">
+        <h3>9. 회원 탈퇴 및 데이터 삭제</h3>
+        <p>
+          이용자는 앱 내 마이페이지에서 직접 회원 탈퇴를 진행할 수 있습니다.
+          회원 탈퇴 시 다음과 같이 데이터가 처리됩니다:
+        </p>
+        <ul>
+          <li>회원 정보: 즉시 삭제</li>
+          <li>상담 내역: 즉시 삭제</li>
+          <li>구독 정보: 즉시 삭제</li>
+        </ul>
+        <p class="note">
+          * 탈퇴 후 데이터는 복구할 수 없으므로 신중하게 결정해 주시기 바랍니다.
+        </p>
       </section>
 
       <section class="policy-section">
@@ -314,7 +337,7 @@ const effectiveDate = '2025-01-01'
         <ul>
           <li>Providing and operating app services</li>
           <li>Service usage statistics and analysis</li>
-          <li>Providing advertising services (Google AdMob)</li>
+          <li v-if="!isMedicalApp">Providing advertising services (Google AdMob)</li>
           <li>Service improvement and new service development</li>
         </ul>
       </section>
@@ -322,11 +345,16 @@ const effectiveDate = '2025-01-01'
       <section class="policy-section english">
         <h3>2. Personal Information Collected</h3>
         <p>The App collects the following information:</p>
-        <ul>
+        <ul v-if="!isMedicalApp">
           <li><strong>Automatically collected:</strong> Device information (model, OS version), app usage statistics, advertising identifier (ADID/IDFA)</li>
           <li><strong>Optionally collected:</strong> None</li>
         </ul>
-        <p class="note">
+        <ul v-else>
+          <li><strong>Required:</strong> Nickname</li>
+          <li><strong>Automatically collected:</strong> Device information (model, OS version), app usage statistics</li>
+          <li><strong>Collected during service use:</strong> Consultation content, subscription information</li>
+        </ul>
+        <p v-if="!isMedicalApp" class="note">
           * This app does not require registration and does not collect personally identifiable information such as name, email, or phone number.
         </p>
       </section>
@@ -432,8 +460,8 @@ const effectiveDate = '2025-01-01'
         <h3>3. Third-Party Services</h3>
         <p>The App uses the following third-party services:</p>
         <ul>
-          <li><strong>Google AdMob:</strong> Mobile advertising</li>
-          <li><strong>Google Firebase:</strong> App analytics and crash reporting</li>
+          <li v-if="!isMedicalApp"><strong>Google AdMob:</strong> Mobile advertising</li>
+          <li><strong>Google Firebase:</strong> <span v-if="!isMedicalApp">App analytics and crash reporting</span><span v-else>User authentication, data storage, app analytics</span></li>
         </ul>
       </section>
 
@@ -444,7 +472,8 @@ const effectiveDate = '2025-01-01'
           <li>Request access to their personal information</li>
           <li>Request correction of errors</li>
           <li>Request deletion of their data</li>
-          <li>Opt-out of personalized advertising</li>
+          <li v-if="!isMedicalApp">Opt-out of personalized advertising</li>
+          <li v-if="isMedicalApp">Delete account through the app</li>
         </ul>
       </section>
 
