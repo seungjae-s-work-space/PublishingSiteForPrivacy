@@ -4,8 +4,9 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
-// 앱 정보 매핑 (a007 ~ a028 + insta-unfollower-checker)
+// 앱 정보 매핑 (a007 ~ a028 + insta-unfollower-checker + gukitso)
 const appInfoMap = {
+  'gukitso': { name: 'Infertility Info & Consultation', nameKo: '골통주부의 난임&상담톡', category: '정보/상담', isMedical: true },
   'insta-unfollower-checker': { name: 'Insta Unfollower Checker', nameKo: '인스타 언팔 체커', category: 'SNS/유틸리티', isInstagram: true },
   'a007': { name: 'Battery Saver Pro', nameKo: '배터리 세이버 프로', category: '배터리/유틸리티' },
   'a008': { name: 'Battery Health Check', nameKo: '배터리 건강 체크', category: '배터리/유틸리티' },
@@ -34,6 +35,7 @@ const appInfoMap = {
 const appId = computed(() => route.params.appId)
 const appInfo = computed(() => appInfoMap[appId.value] || { name: 'Unknown App', nameKo: '알 수 없는 앱', category: '기타' })
 const isInstagramApp = computed(() => appInfo.value.isInstagram === true)
+const isMedicalApp = computed(() => appInfo.value.isMedical === true)
 const currentDate = new Date().toISOString().split('T')[0]
 const effectiveDate = '2025-01-01'
 </script>
@@ -87,6 +89,55 @@ const effectiveDate = '2025-01-01'
         <p class="note">
           * 본 앱은 회원가입을 요구하지 않으며, 이름, 이메일, 전화번호 등의 개인 식별 정보를 수집하지 않습니다.
         </p>
+      </section>
+
+      <!-- 정보/상담 앱 전용 섹션 -->
+      <section v-if="isMedicalApp" class="policy-section medical-section">
+        <h3>💬 난임 정보 제공 및 상담 서비스 관련 개인정보 처리 (중요)</h3>
+        <p>
+          본 앱은 난임 관련 정보 제공 및 상담 서비스를 제공하며, 다음과 같은 방식으로 개인정보를 처리합니다:
+        </p>
+
+        <h4>3-1. 회원 정보</h4>
+        <ul>
+          <li>이메일 주소 (로그인 및 계정 식별용)</li>
+          <li>닉네임 (서비스 내 표시용)</li>
+          <li>프로필 이미지 (선택)</li>
+        </ul>
+
+        <h4>3-2. 상담 내용</h4>
+        <ul>
+          <li>사용자가 작성한 상담 질문 내용</li>
+          <li>전문가의 답변 내용</li>
+          <li>상담 이력 및 기록</li>
+        </ul>
+
+        <h4>3-3. 상담 내용 관련 정보 처리</h4>
+        <p class="note important">
+          ⚠️ <strong>중요:</strong> 사용자가 직접 입력한 상담 관련 내용은 정보 제공 및 상담 목적으로만 사용되며,
+          사용자 동의 없이 제3자에게 제공되지 않습니다. 본 앱은 의료 행위를 제공하지 않으며, 정보 제공 목적의 서비스입니다.
+        </p>
+
+        <h4>3-4. 데이터 저장 및 보안</h4>
+        <ul>
+          <li>모든 데이터는 Firebase (Google Cloud) 서버에 암호화되어 저장됩니다.</li>
+          <li>상담 내용은 담당 전문가와 사용자만 열람할 수 있습니다.</li>
+          <li>관리자는 서비스 운영 목적으로 데이터에 접근할 수 있습니다.</li>
+        </ul>
+
+        <h4>3-5. 구독 및 결제 정보</h4>
+        <ul>
+          <li>인앱 결제는 Google Play / App Store를 통해 처리됩니다.</li>
+          <li>결제 정보(카드번호 등)는 본 앱에서 직접 수집하지 않습니다.</li>
+          <li>구독 상태 및 만료일 정보만 저장됩니다.</li>
+        </ul>
+
+        <h4>3-6. 데이터 보유 기간</h4>
+        <ul>
+          <li>회원 정보: 회원 탈퇴 시까지</li>
+          <li>상담 내역: 회원 탈퇴 후 30일 이내 삭제</li>
+          <li>결제 기록: 관련 법령에 따라 5년간 보관</li>
+        </ul>
       </section>
 
       <!-- Instagram 전용 섹션 -->
@@ -280,6 +331,55 @@ const effectiveDate = '2025-01-01'
         </p>
       </section>
 
+      <!-- Info/Consultation app-specific section (English) -->
+      <section v-if="isMedicalApp" class="policy-section english medical-section">
+        <h3>💬 Infertility Information & Consultation Service - Personal Information Processing (Important)</h3>
+        <p>
+          This app provides infertility-related information and consultation services, and processes personal information as follows:
+        </p>
+
+        <h4>2-1. Member Information</h4>
+        <ul>
+          <li>Email address (for login and account identification)</li>
+          <li>Nickname (for display within the service)</li>
+          <li>Profile image (optional)</li>
+        </ul>
+
+        <h4>2-2. Consultation Content</h4>
+        <ul>
+          <li>Consultation questions written by users</li>
+          <li>Expert responses</li>
+          <li>Consultation history and records</li>
+        </ul>
+
+        <h4>2-3. Consultation Content Processing</h4>
+        <p class="note important">
+          ⚠️ <strong>Important:</strong> Consultation content entered by users is used only for information provision and consultation purposes,
+          and will not be provided to third parties without user consent. This app does not provide medical services; it is an information service.
+        </p>
+
+        <h4>2-4. Data Storage and Security</h4>
+        <ul>
+          <li>All data is encrypted and stored on Firebase (Google Cloud) servers.</li>
+          <li>Consultation content can only be viewed by the assigned expert and the user.</li>
+          <li>Administrators may access data for service operation purposes.</li>
+        </ul>
+
+        <h4>2-5. Subscription and Payment Information</h4>
+        <ul>
+          <li>In-app payments are processed through Google Play / App Store.</li>
+          <li>Payment information (card numbers, etc.) is not directly collected by this app.</li>
+          <li>Only subscription status and expiration date information is stored.</li>
+        </ul>
+
+        <h4>2-6. Data Retention Period</h4>
+        <ul>
+          <li>Member information: Until account deletion</li>
+          <li>Consultation history: Deleted within 30 days after account deletion</li>
+          <li>Payment records: Retained for 5 years in accordance with relevant laws</li>
+        </ul>
+      </section>
+
       <!-- Instagram-specific section (English) -->
       <section v-if="isInstagramApp" class="policy-section english instagram-section">
         <h3>📱 Instagram Data Collection and Processing (Important)</h3>
@@ -463,6 +563,42 @@ const effectiveDate = '2025-01-01'
 
 .policy-section.english h3 {
   color: #2c5282;
+}
+
+/* 의료/건강 앱 전용 스타일 */
+.policy-section.medical-section {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border-left-color: #16a34a;
+  border: 2px solid #16a34a;
+}
+
+.policy-section.medical-section h3 {
+  color: #16a34a;
+  font-size: 1.3rem;
+}
+
+.policy-section.medical-section h4 {
+  color: #15803d;
+  font-size: 1.05rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  padding-left: 0.5rem;
+  border-left: 3px solid #15803d;
+}
+
+.policy-section.medical-section.english {
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  border-left-color: #0284c7;
+  border: 2px solid #0284c7;
+}
+
+.policy-section.medical-section.english h3 {
+  color: #0284c7;
+}
+
+.policy-section.medical-section.english h4 {
+  color: #0369a1;
+  border-left-color: #0369a1;
 }
 
 /* Instagram 전용 스타일 */

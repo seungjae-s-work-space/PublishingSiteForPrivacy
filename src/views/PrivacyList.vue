@@ -1,5 +1,6 @@
 <script setup>
 const apps = [
+  { id: 'gukitso', name: 'Infertility Info & Consultation', nameKo: '골통주부의 난임&상담톡', category: '정보/상담' },
   { id: 'a007', name: 'Battery Saver Pro', nameKo: '배터리 세이버 프로', category: '배터리' },
   { id: 'a008', name: 'Battery Health Check', nameKo: '배터리 건강 체크', category: '배터리' },
   { id: 'a009', name: 'Charging Alarm', nameKo: '충전 알람', category: '배터리' },
@@ -42,7 +43,8 @@ const getAppsByCategory = (category) => {
     <div class="categories">
       <div v-for="category in categories" :key="category" class="category-section">
         <h2 class="category-title">
-          <span v-if="category === '배터리'">🔋</span>
+          <span v-if="category === '정보/상담'">💬</span>
+          <span v-else-if="category === '배터리'">🔋</span>
           <span v-else-if="category === '문서'">📄</span>
           <span v-else>📁</span>
           {{ category }}
