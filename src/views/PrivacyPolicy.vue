@@ -300,7 +300,7 @@ const effectiveDate = '2025-01-01'
             </tr>
             <tr>
               <th>이메일</th>
-              <td>privacy@devstudio.com</td>
+              <td>devethanyoon@gmail.com</td>
             </tr>
           </tbody>
         </table>
@@ -480,7 +480,7 @@ const effectiveDate = '2025-01-01'
       <section class="policy-section english">
         <h3>5. Contact Information</h3>
         <p>
-          For privacy-related inquiries, please contact us at: <strong>privacy@devstudio.com</strong>
+          For privacy-related inquiries, please contact us at: <strong>devethanyoon@gmail.com</strong>
         </p>
       </section>
 
