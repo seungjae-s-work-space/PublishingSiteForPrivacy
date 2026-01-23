@@ -1,28 +1,7 @@
 <script setup>
 const apps = [
   { id: 'gukitso', name: 'Infertility Info & Consultation', nameKo: '골통주부의 난임&상담톡', category: '정보/상담' },
-  { id: 'a007', name: 'Battery Saver Pro', nameKo: '배터리 세이버 프로', category: '배터리' },
-  { id: 'a008', name: 'Battery Health Check', nameKo: '배터리 건강 체크', category: '배터리' },
-  { id: 'a009', name: 'Charging Alarm', nameKo: '충전 알람', category: '배터리' },
-  { id: 'a010', name: 'Battery Widget', nameKo: '배터리 위젯', category: '배터리' },
-  { id: 'a011', name: 'Battery Usage Tracker', nameKo: '배터리 사용량 트래커', category: '배터리' },
-  { id: 'a012', name: 'Fast Charge Monitor', nameKo: '고속 충전 모니터', category: '배터리' },
-  { id: 'a013', name: 'Battery Temperature', nameKo: '배터리 온도', category: '배터리' },
-  { id: 'a014', name: 'Low Battery Alert', nameKo: '저전력 알림', category: '배터리' },
-  { id: 'a015', name: 'Battery History', nameKo: '배터리 히스토리', category: '배터리' },
-  { id: 'a016', name: 'Battery Optimizer', nameKo: '배터리 최적화', category: '배터리' },
-  { id: 'a017', name: 'Charging Animation', nameKo: '충전 애니메이션', category: '배터리' },
-  { id: 'a018', name: 'Battery Percentage', nameKo: '배터리 퍼센트', category: '배터리' },
-  { id: 'a019', name: 'Battery Comparison', nameKo: '배터리 비교', category: '배터리' },
-  { id: 'a020', name: 'Eco Battery Mode', nameKo: '에코 배터리 모드', category: '배터리' },
-  { id: 'a021', name: 'PDF Merger', nameKo: 'PDF 병합', category: '문서' },
-  { id: 'a022', name: 'PDF Splitter', nameKo: 'PDF 분할', category: '문서' },
-  { id: 'a023', name: 'PDF Compressor', nameKo: 'PDF 압축', category: '문서' },
-  { id: 'a024', name: 'Image to PDF', nameKo: '이미지 to PDF', category: '문서' },
-  { id: 'a025', name: 'Image Converter', nameKo: '이미지 변환기', category: '문서' },
-  { id: 'a026', name: 'Scan to PDF', nameKo: '스캔 to PDF', category: '문서' },
-  { id: 'a027', name: 'Document Viewer', nameKo: '문서 뷰어', category: '문서' },
-  { id: 'a028', name: 'ZIP Opener', nameKo: 'ZIP 오프너', category: '파일' }
+  { id: 'insta-unfollower-checker', name: 'Insta Unfollower Checker', nameKo: '인스타 언팔로워 체커', category: 'SNS' }
 ]
 
 const categories = [...new Set(apps.map(app => app.category))]
@@ -44,8 +23,7 @@ const getAppsByCategory = (category) => {
       <div v-for="category in categories" :key="category" class="category-section">
         <h2 class="category-title">
           <span v-if="category === '정보/상담'">💬</span>
-          <span v-else-if="category === '배터리'">🔋</span>
-          <span v-else-if="category === '문서'">📄</span>
+          <span v-else-if="category === 'SNS'">📱</span>
           <span v-else>📁</span>
           {{ category }}
         </h2>

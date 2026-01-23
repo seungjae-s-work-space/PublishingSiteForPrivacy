@@ -179,10 +179,6 @@
                 <span class="button-icon">📧</span>
                 <span>프로젝트 문의</span>
               </a>
-              <router-link to="/privacy" class="cta-button secondary">
-                <span class="button-icon">🔒</span>
-                <span>개인정보처리방침</span>
-              </router-link>
             </div>
           </div>
         </div>
