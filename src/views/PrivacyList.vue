@@ -1,5 +1,6 @@
 <script setup>
 const apps = [
+  { id: 'woori', name: 'woori', nameKo: '우우리', category: '소셜/커뮤니티' },
   { id: 'gukitso', name: 'Infertility Info & Consultation', nameKo: '골통주부의 난임&상담톡', category: '정보/상담' },
   { id: 'insta-unfollower-checker', name: 'Insta Unfollower Checker', nameKo: '인스타 언팔로워 체커', category: 'SNS' }
 ]
@@ -22,7 +23,8 @@ const getAppsByCategory = (category) => {
     <div class="categories">
       <div v-for="category in categories" :key="category" class="category-section">
         <h2 class="category-title">
-          <span v-if="category === '정보/상담'">💬</span>
+          <span v-if="category === '소셜/커뮤니티'">👥</span>
+          <span v-else-if="category === '정보/상담'">💬</span>
           <span v-else-if="category === 'SNS'">📱</span>
           <span v-else>📁</span>
           {{ category }}

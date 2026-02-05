@@ -4,8 +4,9 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
-// 앱 정보 매핑 (a007 ~ a028 + insta-unfollower-checker + gukitso)
+// 앱 정보 매핑 (a007 ~ a028 + insta-unfollower-checker + gukitso + woori)
 const appInfoMap = {
+  'woori': { name: 'woori', nameKo: '우우리', category: '소셜/커뮤니티', isSocialApp: true },
   'gukitso': { name: 'Infertility Info & Consultation', nameKo: '골통주부의 난임&상담톡', category: '정보/상담', isMedical: true },
   'insta-unfollower-checker': { name: 'Insta Unfollower Checker', nameKo: '인스타 언팔 체커', category: 'SNS/유틸리티', isInstagram: true },
   'a007': { name: 'Battery Saver Pro', nameKo: '배터리 세이버 프로', category: '배터리/유틸리티' },
@@ -36,6 +37,7 @@ const appId = computed(() => route.params.appId)
 const appInfo = computed(() => appInfoMap[appId.value] || { name: 'Unknown App', nameKo: '알 수 없는 앱', category: '기타' })
 const isInstagramApp = computed(() => appInfo.value.isInstagram === true)
 const isMedicalApp = computed(() => appInfo.value.isMedical === true)
+const isSocialApp = computed(() => appInfo.value.isSocialApp === true)
 const currentDate = new Date().toISOString().split('T')[0]
 const effectiveDate = '2025-01-01'
 </script>
@@ -62,7 +64,9 @@ const effectiveDate = '2025-01-01'
         <ul>
           <li>앱 서비스 제공 및 운영</li>
           <li>서비스 이용 통계 및 분석</li>
-          <li v-if="!isMedicalApp">광고 서비스 제공 (Google AdMob)</li>
+          <li v-if="!isMedicalApp && !isSocialApp">광고 서비스 제공 (Google AdMob)</li>
+          <li v-if="isSocialApp">회원 관리 및 본인 확인</li>
+          <li v-if="isSocialApp">소셜 커뮤니티 서비스 제공</li>
           <li>서비스 개선 및 신규 서비스 개발</li>
         </ul>
       </section>
@@ -75,24 +79,30 @@ const effectiveDate = '2025-01-01'
         </p>
         <ul>
           <li>서비스 이용 기록: 앱 삭제 시까지</li>
-          <li v-if="!isMedicalApp">광고 식별자: 사용자 재설정 또는 앱 삭제 시까지</li>
-          <li v-if="isMedicalApp">회원 정보: 회원 탈퇴 시까지</li>
+          <li v-if="!isMedicalApp && !isSocialApp">광고 식별자: 사용자 재설정 또는 앱 삭제 시까지</li>
+          <li v-if="isMedicalApp || isSocialApp">회원 정보: 회원 탈퇴 시까지</li>
+          <li v-if="isSocialApp">게시물 및 댓글: 삭제 요청 또는 회원 탈퇴 시까지</li>
         </ul>
       </section>
 
       <section class="policy-section">
         <h3>3. 처리하는 개인정보 항목</h3>
         <p>앱은 다음의 개인정보 항목을 처리하고 있습니다:</p>
-        <ul v-if="!isMedicalApp">
+        <ul v-if="!isMedicalApp && !isSocialApp">
           <li><strong>자동 수집 항목:</strong> 기기 정보 (기기 모델, OS 버전), 앱 사용 통계, 광고 식별자 (ADID/IDFA)</li>
           <li><strong>선택 수집 항목:</strong> 없음</li>
+        </ul>
+        <ul v-else-if="isSocialApp">
+          <li><strong>필수 수집 항목:</strong> 소셜 로그인 정보 (Apple ID, 카카오, 네이버 연동 정보), 닉네임</li>
+          <li><strong>자동 수집 항목:</strong> 기기 정보 (기기 모델, OS 버전), 앱 사용 통계</li>
+          <li><strong>서비스 이용 시 수집:</strong> 게시물 내용, 사진/이미지, 댓글</li>
         </ul>
         <ul v-else>
           <li><strong>필수 수집 항목:</strong> 이메일 주소, 닉네임</li>
           <li><strong>자동 수집 항목:</strong> 기기 정보 (기기 모델, OS 버전), 앱 사용 통계</li>
           <li><strong>서비스 이용 시 수집:</strong> 상담 내용, 첨부 파일 (사진, 문서), 구독 정보</li>
         </ul>
-        <p v-if="!isMedicalApp" class="note">
+        <p v-if="!isMedicalApp && !isSocialApp" class="note">
           * 본 앱은 회원가입을 요구하지 않으며, 이름, 이메일, 전화번호 등의 개인 식별 정보를 수집하지 않습니다.
         </p>
       </section>
@@ -153,6 +163,60 @@ const effectiveDate = '2025-01-01'
           <li>상담 내역: 회원 탈퇴 시 즉시 삭제</li>
           <li>첨부 파일: 회원 탈퇴 시 즉시 삭제</li>
           <li>결제 기록: 관련 법령에 따라 5년간 보관</li>
+        </ul>
+      </section>
+
+      <!-- 소셜 커뮤니티 앱 전용 섹션 -->
+      <section v-if="isSocialApp" class="policy-section social-section">
+        <h3>👥 소셜 커뮤니티 서비스 개인정보 처리 (중요)</h3>
+        <p>
+          본 앱은 소셜 커뮤니티 서비스를 제공하며, 다음과 같은 방식으로 개인정보를 처리합니다:
+        </p>
+
+        <h4>3-1. 소셜 로그인</h4>
+        <ul>
+          <li>Apple 로그인 (Apple ID 연동)</li>
+          <li>카카오 로그인 (카카오 계정 연동)</li>
+          <li>네이버 로그인 (네이버 계정 연동)</li>
+        </ul>
+        <p class="note">
+          * 소셜 로그인 시 해당 플랫폼에서 제공하는 고유 식별자와 닉네임만 수집합니다.
+          비밀번호는 수집하지 않습니다.
+        </p>
+
+        <h4>3-2. 회원 정보</h4>
+        <ul>
+          <li>소셜 로그인 연동 정보 (플랫폼별 고유 식별자)</li>
+          <li>닉네임 (서비스 내 표시용)</li>
+          <li>프로필 이미지 (선택)</li>
+        </ul>
+
+        <h4>3-3. 게시물 및 콘텐츠</h4>
+        <ul>
+          <li>사용자가 작성한 게시물 내용</li>
+          <li>업로드한 사진 및 이미지</li>
+          <li>댓글 내용</li>
+        </ul>
+
+        <h4>3-4. 데이터 저장 및 보안</h4>
+        <ul>
+          <li>모든 데이터는 Firebase (Google Cloud) 서버에 암호화되어 저장됩니다.</li>
+          <li>이미지는 Cloudflare R2에 안전하게 저장됩니다.</li>
+          <li>개인정보는 암호화하여 안전하게 관리합니다.</li>
+        </ul>
+
+        <h4>3-5. 푸시 알림</h4>
+        <ul>
+          <li>Firebase Cloud Messaging (FCM)을 통해 푸시 알림을 제공합니다.</li>
+          <li>기기 토큰은 알림 발송 목적으로만 사용됩니다.</li>
+          <li>사용자는 기기 설정에서 언제든지 알림을 비활성화할 수 있습니다.</li>
+        </ul>
+
+        <h4>3-6. 데이터 보유 기간</h4>
+        <ul>
+          <li>회원 정보: 회원 탈퇴 시까지</li>
+          <li>게시물 및 댓글: 삭제 요청 또는 회원 탈퇴 시 즉시 삭제</li>
+          <li>업로드 이미지: 게시물 삭제 또는 회원 탈퇴 시 즉시 삭제</li>
         </ul>
       </section>
 
@@ -221,14 +285,31 @@ const effectiveDate = '2025-01-01'
             </tr>
           </thead>
           <tbody>
-            <tr v-if="!isMedicalApp">
+            <tr v-if="!isMedicalApp && !isSocialApp">
               <td>Google LLC (AdMob)</td>
               <td>모바일 광고 서비스 제공</td>
             </tr>
             <tr>
               <td>Google LLC (Firebase)</td>
-              <td v-if="!isMedicalApp">앱 분석 및 오류 보고</td>
+              <td v-if="!isMedicalApp && !isSocialApp">앱 분석 및 오류 보고</td>
+              <td v-else-if="isSocialApp">사용자 인증, 푸시 알림, 앱 분석</td>
               <td v-else>사용자 인증, 데이터 저장, 앱 분석</td>
+            </tr>
+            <tr v-if="isSocialApp">
+              <td>Cloudflare Inc. (R2)</td>
+              <td>이미지 저장 및 제공</td>
+            </tr>
+            <tr v-if="isSocialApp">
+              <td>Apple Inc.</td>
+              <td>소셜 로그인 서비스 (Sign in with Apple)</td>
+            </tr>
+            <tr v-if="isSocialApp">
+              <td>카카오</td>
+              <td>소셜 로그인 서비스 (카카오 로그인)</td>
+            </tr>
+            <tr v-if="isSocialApp">
+              <td>네이버</td>
+              <td>소셜 로그인 서비스 (네이버 로그인)</td>
             </tr>
           </tbody>
         </table>
@@ -347,7 +428,9 @@ const effectiveDate = '2025-01-01'
         <ul>
           <li>Providing and operating app services</li>
           <li>Service usage statistics and analysis</li>
-          <li v-if="!isMedicalApp">Providing advertising services (Google AdMob)</li>
+          <li v-if="!isMedicalApp && !isSocialApp">Providing advertising services (Google AdMob)</li>
+          <li v-if="isSocialApp">Member management and identity verification</li>
+          <li v-if="isSocialApp">Providing social community services</li>
           <li>Service improvement and new service development</li>
         </ul>
       </section>
@@ -355,16 +438,21 @@ const effectiveDate = '2025-01-01'
       <section class="policy-section english">
         <h3>2. Personal Information Collected</h3>
         <p>The App collects the following information:</p>
-        <ul v-if="!isMedicalApp">
+        <ul v-if="!isMedicalApp && !isSocialApp">
           <li><strong>Automatically collected:</strong> Device information (model, OS version), app usage statistics, advertising identifier (ADID/IDFA)</li>
           <li><strong>Optionally collected:</strong> None</li>
+        </ul>
+        <ul v-else-if="isSocialApp">
+          <li><strong>Required:</strong> Social login information (Apple ID, Kakao, Naver integration), Nickname</li>
+          <li><strong>Automatically collected:</strong> Device information (model, OS version), app usage statistics</li>
+          <li><strong>Collected during service use:</strong> Posts, photos/images, comments</li>
         </ul>
         <ul v-else>
           <li><strong>Required:</strong> Email address, Nickname</li>
           <li><strong>Automatically collected:</strong> Device information (model, OS version), app usage statistics</li>
           <li><strong>Collected during service use:</strong> Consultation content, attached files (photos, documents), subscription information</li>
         </ul>
-        <p v-if="!isMedicalApp" class="note">
+        <p v-if="!isMedicalApp && !isSocialApp" class="note">
           * This app does not require registration and does not collect personally identifiable information such as name, email, or phone number.
         </p>
       </section>
@@ -428,6 +516,60 @@ const effectiveDate = '2025-01-01'
         </ul>
       </section>
 
+      <!-- Social Community app-specific section (English) -->
+      <section v-if="isSocialApp" class="policy-section english social-section">
+        <h3>👥 Social Community Service - Personal Information Processing (Important)</h3>
+        <p>
+          This app provides social community services and processes personal information as follows:
+        </p>
+
+        <h4>2-1. Social Login</h4>
+        <ul>
+          <li>Apple Sign In (Apple ID integration)</li>
+          <li>Kakao Login (Kakao account integration)</li>
+          <li>Naver Login (Naver account integration)</li>
+        </ul>
+        <p class="note">
+          * Only the unique identifier and nickname provided by each platform are collected during social login.
+          Passwords are not collected.
+        </p>
+
+        <h4>2-2. Member Information</h4>
+        <ul>
+          <li>Social login integration information (platform-specific unique identifiers)</li>
+          <li>Nickname (for display within the service)</li>
+          <li>Profile image (optional)</li>
+        </ul>
+
+        <h4>2-3. Posts and Content</h4>
+        <ul>
+          <li>Post content written by users</li>
+          <li>Uploaded photos and images</li>
+          <li>Comments</li>
+        </ul>
+
+        <h4>2-4. Data Storage and Security</h4>
+        <ul>
+          <li>All data is encrypted and stored on Firebase (Google Cloud) servers.</li>
+          <li>Images are securely stored on Cloudflare R2.</li>
+          <li>Personal information is encrypted and managed securely.</li>
+        </ul>
+
+        <h4>2-5. Push Notifications</h4>
+        <ul>
+          <li>Push notifications are provided through Firebase Cloud Messaging (FCM).</li>
+          <li>Device tokens are used only for sending notifications.</li>
+          <li>Users can disable notifications at any time through device settings.</li>
+        </ul>
+
+        <h4>2-6. Data Retention Period</h4>
+        <ul>
+          <li>Member information: Until account deletion</li>
+          <li>Posts and comments: Immediately deleted upon request or account deletion</li>
+          <li>Uploaded images: Immediately deleted upon post deletion or account deletion</li>
+        </ul>
+      </section>
+
       <!-- Instagram-specific section (English) -->
       <section v-if="isInstagramApp" class="policy-section english instagram-section">
         <h3>📱 Instagram Data Collection and Processing (Important)</h3>
@@ -480,8 +622,12 @@ const effectiveDate = '2025-01-01'
         <h3>3. Third-Party Services</h3>
         <p>The App uses the following third-party services:</p>
         <ul>
-          <li v-if="!isMedicalApp"><strong>Google AdMob:</strong> Mobile advertising</li>
-          <li><strong>Google Firebase:</strong> <span v-if="!isMedicalApp">App analytics and crash reporting</span><span v-else>User authentication, data storage, app analytics</span></li>
+          <li v-if="!isMedicalApp && !isSocialApp"><strong>Google AdMob:</strong> Mobile advertising</li>
+          <li><strong>Google Firebase:</strong> <span v-if="!isMedicalApp && !isSocialApp">App analytics and crash reporting</span><span v-else-if="isSocialApp">User authentication, push notifications, app analytics</span><span v-else>User authentication, data storage, app analytics</span></li>
+          <li v-if="isSocialApp"><strong>Cloudflare R2:</strong> Image storage and delivery</li>
+          <li v-if="isSocialApp"><strong>Apple Inc.:</strong> Sign in with Apple</li>
+          <li v-if="isSocialApp"><strong>Kakao:</strong> Kakao Login</li>
+          <li v-if="isSocialApp"><strong>Naver:</strong> Naver Login</li>
         </ul>
       </section>
 
@@ -492,8 +638,8 @@ const effectiveDate = '2025-01-01'
           <li>Request access to their personal information</li>
           <li>Request correction of errors</li>
           <li>Request deletion of their data</li>
-          <li v-if="!isMedicalApp">Opt-out of personalized advertising</li>
-          <li v-if="isMedicalApp">Delete account through the app</li>
+          <li v-if="!isMedicalApp && !isSocialApp">Opt-out of personalized advertising</li>
+          <li v-if="isMedicalApp || isSocialApp">Delete account through the app</li>
         </ul>
       </section>
 
@@ -684,6 +830,42 @@ const effectiveDate = '2025-01-01'
 .policy-section.instagram-section.english h4 {
   color: #2c5282;
   border-left-color: #2c5282;
+}
+
+/* 소셜 커뮤니티 앱 전용 스타일 */
+.policy-section.social-section {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-left-color: #f59e0b;
+  border: 2px solid #f59e0b;
+}
+
+.policy-section.social-section h3 {
+  color: #d97706;
+  font-size: 1.3rem;
+}
+
+.policy-section.social-section h4 {
+  color: #b45309;
+  font-size: 1.05rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  padding-left: 0.5rem;
+  border-left: 3px solid #b45309;
+}
+
+.policy-section.social-section.english {
+  background: linear-gradient(135deg, #fff7ed, #ffedd5);
+  border-left-color: #ea580c;
+  border: 2px solid #ea580c;
+}
+
+.policy-section.social-section.english h3 {
+  color: #ea580c;
+}
+
+.policy-section.social-section.english h4 {
+  color: #c2410c;
+  border-left-color: #c2410c;
 }
 
 .note.important {
